@@ -1,0 +1,85 @@
+# This is a project that is made to test my understanding of logical infastructure that allows me to link 3 classes together so I can build off the logic of each of them to eventually initialize one instance of a class and make it have many 
+# properties such as, location, time, menu, name, and more.
+
+
+
+
+# Defining a class Menu and defining 4 instances of the class to use later in the Franchise and Business classes
+
+class Menu:
+  def __init__(self, name, items, start_time, end_time):
+    self.name = name
+    self.items = items
+    self.start_time = start_time
+    self.end_time = end_time
+
+
+  def __repr__(self):
+    return "This is the {} menu, it starts at {} and ends at {}".format(self.name, self.start_time, self.end_time)
+
+  def calculate_bill(self, purchased_items):
+    total_price = 0
+    for item in purchased_items:
+      total_price += self.items[item]
+    return total_price
+
+
+
+brunch = Menu("Brunch", {
+  'pancakes': 7.50, 'waffles': 9.00, 'burger': 11.00, 'home fries': 4.50, 'coffee': 1.50, 'espresso': 3.00, 'tea': 1.00, 'mimosa': 10.50, 'orange juice': 3.50
+}, 1100, 1600)
+early_bird = Menu("Early Bird", {
+  'salumeria plate': 8.00, 'salad and breadsticks (serves 2, no refills)': 14.00, 'pizza with quattro formaggi': 9.00, 'duck ragu': 17.50, 'mushroom ravioli (vegan)': 13.50, 'coffee': 1.50, 'espresso': 3.00,
+}, 1500, 1800)
+dinner = Menu("Dinner", {
+  'crostini with eggplant caponata': 13.00, 'caesar salad': 16.00, 'pizza with quattro formaggi': 11.00, 'duck ragu': 19.50, 'mushroom ravioli (vegan)': 13.50, 'coffee': 2.00, 'espresso': 3.00,
+}, 1700, 2300)
+kids = Menu("Kids", {
+  'chicken nuggets': 6.50, 'fusilli with wild mushrooms': 12.00, 'apple juice': 3.00
+}, 1100, 2100)
+arepas_menu = Menu("Arepas", {
+  'arepa pabellon': 7.00, 'pernil arepa': 8.50, 'guayanes arepa': 8.00, 'jamon arepa': 7.50
+}, 800, 2000)
+#print(kids)
+
+
+
+
+
+#Defining a class Franchise so we can store the information of our location, menus, and times. And defining 2 instances of the class.
+class Franchise:
+  def __init__(self, adress, menus):
+    self.adress = adress
+    self.menus = menus
+  def __repr__(self):
+    print(self.adress)
+  def available_menus(self, time):
+    available_menus = []
+    for menu in self.menus:
+      if time >= menu.start_time and time <= menu.end_time:
+        available_menus.append(menu)
+    return available_menus
+
+flagship_store =  Franchise("1232 West End Road", [brunch, early_bird, dinner, kids])
+new_installment =  Franchise("12 East Mulberry Street", [brunch, early_bird, dinner, kids])
+#print(flagship_store.available_menus(1200))
+
+
+
+
+#Defining a business class so we can make our own business using the pervious two classes.
+class Business:
+  def __init__(self, name, franchises):
+    self.name = self
+    self.franchise = franchises
+
+
+basta = Business("Basta Fazoolin' with my Heart", [flagship_store , new_installment])
+
+arepas_place = Franchise("189 Fitzgerald Avenue", [arepas_menu])
+take_a_arepa = Business("Take a' Arepa", arepas_place)
+print(arepas_place.available_menus(1700))
+
+print(arepas_menu.calculate_bill({
+  'arepa pabellon': 7.00, 'pernil arepa': 8.50, 'guayanes arepa': 8.00, 'jamon arepa': 7.50
+}))
